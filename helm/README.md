@@ -1,3 +1,21 @@
+
+
+Edited note.md
+Viewed values.yaml:373-388
+
+Yes, exactly! When you run `kagent install --profile demo`, the CLI is essentially acting as an automated installer that does a few core things for you under the hood:
+
+1. **Installs the Custom Resource Definitions (CRDs):** It applies the Kubernetes CRDs necessary for Kagent to work (like `Agent`, `AgentRun`, `MCPTool`, etc.).
+2. **Deploys the Helm Chart:** It installs the `kagent` Helm chart (which includes the controller, UI, and necessary RBAC permissions) into your cluster.
+3. **Applies Profile-Specific Resources (`--profile demo`):** This is where the magic happens. Because you selected the `demo` profile, it automatically applies pre-configured Custom Resources (CRs) into your cluster. This typically includes:
+   - Several pre-configured `Agent` resources (ready to use).
+   - Some default `MCPTool` resources (giving those agents abilities, like fetching cluster info or running commands).
+
+### The Alternative (`--profile minimal`)
+If you were to run `kagent install --profile minimal`, it would still do steps 1 and 2 (installing the CRDs and the Helm chart), but it would skip step 3. You would get a completely blank slate with no pre-configured agents or tools, leaving you to create them all manually. 
+
+So, in short: `kagent install` is a wrapper around `helm install` + `kubectl apply` that makes getting started with Kagent much easier!
+
 # Kagent Helm Chart
 
 These Helm charts install kagent-crds,kagent, it is required that the Kagent CRDs chart to be installed first.
